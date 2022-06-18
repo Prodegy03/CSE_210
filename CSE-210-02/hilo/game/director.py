@@ -18,8 +18,8 @@ class Director:
         self.score = 0
         self.total_score = 0
 
-        for i in range(5):
-            card = Card()
+        for i in range(12):
+            card = Card(self)
             self.card.append(card)
 
     def start_game(self):
