@@ -1,58 +1,104 @@
 import random
+from jumper import jumper
 
-class Hider:
-    """The person hiding from the Seeker. 
+class word:
+    """The word to guess. 
     
-    The responsibility of Hider is to keep track of its location and distance from the seeker. 
+     
     
     Attributes:
-        _location (int): The location of the hider (1-1000).
-        _distance (List[int]): The distance from the seeker.
+        _word (str): The word to guess from a specific list.
+        _correct (List[word]): correct letters in a word.
     """
+  
+    def get_random_word(word_list):
+     
+     wordIndex = random.randint(0, len(word_list) - 1)
+     return word_list[wordIndex]
 
-    def __init__(self):
-        """Constructs a new Hider.
+    def displayBoard(missedLetters, correctLetters, secretWord, jumper_PICS):
+     print(jumper_PICS[len(missedLetters)])
+     print()
 
-        Args:
-            self (Hider): An instance of Hider.
-        """
-        self._location = random.randint(1, 1000)
-        self._distance = [0, 0] # start with two so get_hint always works
-    
-    def get_hint(self):
-        """Gets a hint for the seeker.
+     print('Missed letters:', end=' ')
+     for letter in missedLetters:
+         print(letter, end=' ')
+     print()
 
-        Args:
-            self (Hider): An instance of Hider.
-        
-        Returns:
-            string: A hint for the seeker.
-        """
-        hint = "(-.-) Nap time."
-        if self._distance[-1] == 0:
-            hint = "(;.;) You found me!"
-        elif self._distance[-1] > self._distance[-2]:
-            hint = "(^.^) Getting colder!"
-        elif self._distance[-1] < self._distance[-2]:
-            hint = "(>.<) Getting warmer!"
-        return hint
+     blanks = '_' * len(secretWord)
 
-    def is_found(self):
-        """Whether or not the hider has been found.
+     for i in range(len(secretWord)): 
+         if secretWord[i] in correctLetters:
+             blanks = blanks[:i] + secretWord[i] + blanks[i+1:]
 
-        Args:
-            self (Hider): An instance of Hider.
+     for letter in blanks:
+         print(letter, end=' ')
+    print()
+
+    def getGuess(alreadyGuessed):
+     # Returns the letter the player entered. This function makes sure the
+       # player entered a single letter and not something else.
+     while True:
+         print('Guess a letter.')
+         guess = input()
+         guess = guess.lower()
+         if len(guess) != 1:
+             print('Please enter a single letter.')
+         elif guess in alreadyGuessed:
+              print('You have already guessed that letter. Choose again.')
+         elif guess not in 'abcdefghijklmnopqrstuvwxyz':
+              print('Please enter a LETTER.')
+         else:
+              return guess
+ 
+    def playAgain():
+     # This function returns True if the player wants to play again;
+         #  otherwise, it returns False.
+     print('Do you want to play again? (yes or no)')
+     return input().lower().startswith('y')
+
+def game(word_list, displayBoard, getGuess,jumper_PICS,get_random_word, playAgain, words ):
+    print('JUMP')
+    missedLetters = ''
+    correctLetters = ''
+    secretWord =  get_random_word(word_list)
+    gameIsDone = False
+
+    while True:
+        displayBoard(missedLetters, correctLetters, secretWord)
+
+     # Let the player enter a letter.
+        guess = getGuess(missedLetters + correctLetters)
+
+        if guess in secretWord:
+            correctLetters = correctLetters + guess
+
+         # Check if the player has won.
+            foundAllLetters = True
+            for i in range(len(secretWord)):
+                if secretWord[i] not in correctLetters:
+                    foundAllLetters = False
+                    break
+            if foundAllLetters:
+                print('Yes! The secret word is "' + secretWord +
+                '"! You have won!')
+                gameIsDone = True
+            else:
+                missedLetters = missedLetters + guess
+         # Check if player has guessed too many times and lost.
+        if len(missedLetters) == len(jumper_PICS) - 1:
+             displayBoard(missedLetters, correctLetters, secretWord)
+             print('You have run out of guesses!\nAfter ' +
+                str(len(missedLetters)) + ' missed guesses and ' +
+                str(len(correctLetters)) +  'correct guesses, the word was' '"'
+                + secretWord + '"')
+             gameIsDone = True
+        if gameIsDone:
+            if playAgain():
+                missedLetters = ''
+                correctLetters = ''
+                gameIsDone = False
+                secretWord = get_random_word(words)
+            else:
+                break
             
-        Returns:
-            boolean: True if the hider was found; false if otherwise.
-        """
-        return (self._distance[-1] == 0)
-        
-    def watch_seeker(self, seeker):
-        """Watches the seeker by keeping track of how far away it is.
-
-        Args:
-            self (Hider): An instance of Hider.
-        """
-        distance = abs(self._location - seeker.get_location())
-        self._distance.append(distance)
