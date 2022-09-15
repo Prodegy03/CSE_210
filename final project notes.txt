@@ -1,0 +1,102 @@
+CREATE OR REPLACE TRIGGER insert_update
+AFTER
+INSERT OR UPDATE 
+ON ITEM
+BEGIN
+MANAGE_ITEMS
+END;
+/
+
+
+
+
+Lab 13 – Final Project – Task Sequence –
+
+Object Types –
+
+          base_t
+
+          dwarf_t
+
+          elf_t
+
+          goblin_t
+
+          hobbit_t
+
+          maia_t
+
+          man_t
+
+          orc_t
+
+          nolder_t
+
+          silvan_t
+
+          sindar_t
+
+          teleri_t
+
+ls *_t.sql
+
+create_tolkien.sql – creates tolkien table
+
+create_tolkien_s.sql – creates tolkien_s sequence
+
+type_validation.sql – validation of object types
+
+insert_instances.sql – inserts 21 object type instances
+
+query_instances.sql – verifies the 21 valid instance inserts
+
+test all scripts –
+
+          sqlplus student/student @script_name.sql
+
+create_final.sh – automate the process with a Bash shell script
+
+call the create_final.sh script from the OS prompt.
+
+May need to set privileges as in previous exercises.
+
+Last step creates a txt file, query_instance.txt. cat that file.
+
+dwarf_t is
+(OID NUMBER
+ , ONAME VARCHAR2(30)
+ , NAME VARCHAR2(30)
+ , GENUS VARCHAR2(30))
+
+ MEMBER FUNCTION GET_ONAME RETURNS VARCHAR2
+
+ MEMBER PROCEDURE SET_ONAME
+(ONAME VARCHAR2)		
+
+ FINAL CONSTRUCTOR FUNCTION DWARF_T 
+(NAME VARCHAR2		
+ , GENUS VARCHAR2) RETURNS SELF AS RESULT	
+
+
+, MEMBER FUNCTION GET_NAME RETURNS VARCHAR2
+
+, MEMBER PROCEDURE SET_NAME
+ (NAME VARCHAR2)		
+
+
+, MEMBER FUNCTION GET_GENUS RETURN VARCHAR2
+
+
+, MEMBER PROCEDURE SET_GENUS
+(GENUS	VARCHAR2)
+ 
+
+, FUNCTION TO_STRING RETURN VARCHAR2
+
+
+ELF_TYPES:
+
+(ELFKIND VARCHAR2(30))
+, MEMBER FUNCTION GET_ELFKIND RETURN VARCHAR2
+, MEMBER PROCEDURE SET_ELFKIND
+(ELFKIND VARCHAR2)

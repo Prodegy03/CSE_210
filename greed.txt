@@ -1,0 +1,43 @@
+Gems (*) and rocks (o) randomly appear and fall from the top of the screen.
+The player (#) can move left or right along the bottom of the screen.
+If the player touches a gem they earn a point.
+If the player touches a rock they lose a point.
+Gems and rocks are removed when the player touches them.
+The game continues until the player closes the window.
+
+CLASSES
+gems
+rocks
+movement
+points
+player
+game_grid
+
+
+FUNCTIONS
+under gem
+gem_generation: random
+gem_pics: what gems look like
+
+
+under rocks
+rock_generation: random
+rock_pics: what rocks look like.
+
+
+under movement
+gem_movment: down screen
+rock_movement: down screen
+player_movement: left and right
+
+under player
+player_pics: what player looks like
+
+under points
+rock_player_intersect: takes one point from total points
+gem_player_intersect: gives one point to total points
+total_points: tracks points
+
+under game_grid
+coordinates: maps out the game screen
+display_game: shows the game
